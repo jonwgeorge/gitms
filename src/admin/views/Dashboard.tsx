@@ -75,7 +75,7 @@ export async function Dashboard() {
             </div>
           </section>
         ) : null}
-        {c.sections.map((section) => (
+        {c.sections.filter((section) => section.dashboard !== false).map((section) => (
           <section key={section.slug} className={styles.tile} aria-labelledby={`tile-${section.slug}`}>
             <h2 id={`tile-${section.slug}`} className="gitms-h2">
               {section.label}

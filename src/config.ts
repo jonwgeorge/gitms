@@ -86,6 +86,12 @@ export type CustomSection = {
   /** URL segment under the admin path, e.g. "settings". */
   readonly slug: string;
   readonly label: string;
+  /**
+   * Show a tile for this section on the dashboard. Defaults to true, except
+   * for a settings section (label or slug "Settings"), which defaults to false.
+   * The section stays in the sidebar either way.
+   */
+  readonly dashboard?: boolean;
 };
 
 /** A content file of your own (for custom sections), saved through the same store. */
@@ -125,6 +131,9 @@ export type GitmsConfig = {
   /** Content files your custom sections read and save, by key. */
   readonly files?: Readonly<Record<string, ExtraFile>>;
 };
+
+/** Settings are edited now and then, not watched, so they get no dashboard tile unless asked for. */
+const isSettings = (s: CustomSection) => /^settings$/i.test(s.label.trim()) || s.slug === "settings";
 
 export type ResolvedConfig = {
   readonly basePath: string;
@@ -230,7 +239,7 @@ export function defineGitms(config: GitmsConfig): ResolvedConfig {
     uploads = { dir, publicPath, maxBytes: config.uploads.maxBytes ?? 5 * 1024 * 1024 };
   }
 
-  const sections = config.sections ?? [];
+  const sections = (config.sections ?? []).map((s) => ({ ...s, dashboard: s.dashboard ?? !isSettings(s) }));
   const seen = new Set<string>();
   for (const s of sections) {
     if (!SEGMENT.test(s.slug) || BUILT_IN_SEGMENTS.includes(s.slug) || seen.has(s.slug)) fail(`sections: "${s.slug}" can't be used as a section slug`);
