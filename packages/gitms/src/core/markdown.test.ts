@@ -87,8 +87,8 @@ describe("parseInline", () => {
   });
 
   it("images only from this site; others become a link", () => {
-    expect(parseInline("![rack](/img/rack.jpg)")).toEqual([{ t: "img", src: "/img/rack.jpg", alt: "rack" }]);
-    expect(parseInline("![rack](https://cdn.example/r.jpg)")).toEqual([{ t: "a", href: "https://cdn.example/r.jpg", c: ["rack"] }]);
+    expect(parseInline("![photo](/img/photo.jpg)")).toEqual([{ t: "img", src: "/img/photo.jpg", alt: "photo" }]);
+    expect(parseInline("![photo](https://cdn.example/r.jpg)")).toEqual([{ t: "a", href: "https://cdn.example/r.jpg", c: ["photo"] }]);
   });
 });
 

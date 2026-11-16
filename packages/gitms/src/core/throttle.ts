@@ -108,18 +108,18 @@ export function failureDelay(): Promise<void> {
 }
 
 /**
- * The client address, from `cf-connecting-ip` only. Cloudflare sets that
- * header itself on every request and overwrites anything the client sent.
- * It keeps client-supplied `x-forwarded-for` / `x-real-ip` / `x-vercel-*`
- * values, so those are spoofable here and deliberately ignored: trusting them
- * would let a client pick a fresh address per attempt and skip the limit.
- * Behind any other host, revisit this before deploying.
+ * The client address, from one header your host sets itself and overwrites
+ * whatever the client sent (config `clientIpHeader`; `cf-connecting-ip` on
+ * Cloudflare, the default). Headers a client can set, like `x-forwarded-for`
+ * on hosts that pass it through, would let a client pick a fresh address per
+ * attempt and skip the limit, so only name one your host guarantees.
  */
-export function clientIp(headers: Headers): string {
-  // No header (only off Cloudflare, e.g. `next dev`): every such request shares
-  // one "unknown" bucket (fail closed: they can lock each other out, but none
-  // of them goes unlimited).
-  return headers.get("cf-connecting-ip")?.trim() || "unknown";
+export function clientIp(headers: Headers, header: string = "cf-connecting-ip"): string {
+  // No header (e.g. `next dev`): every such request shares one "unknown"
+  // bucket (fail closed: they can lock each other out, but none goes unlimited).
+  const v = headers.get(header)?.trim() ?? "";
+  // x-forwarded-for style lists: the left-most entry is the client.
+  return v.split(",")[0].trim() || "unknown";
 }
 
 /** Test helper: how many clients are tracked. */

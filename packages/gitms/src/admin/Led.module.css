@@ -1,0 +1,25 @@
+.led {
+  display: inline-block;
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--gitms-radius-dot);
+  border: 1px solid var(--gitms-line);
+  background: var(--gitms-grid);
+}
+
+.led[data-led="on"] {
+  background: var(--gitms-accent);
+  border-color: var(--gitms-accent);
+  box-shadow: 0 0 6px var(--gitms-accent);
+}
+
+.led[data-led="warn"] {
+  background: var(--gitms-warn);
+  border-color: var(--gitms-warn);
+}
+
+.led[data-led="fault"] {
+  background: var(--gitms-fault);
+  border-color: var(--gitms-fault);
+}

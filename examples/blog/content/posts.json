@@ -1,0 +1,18 @@
+{
+  "posts": [
+    {
+      "slug": "hello-world",
+      "title": "Hello, world",
+      "at": "2026-01-05T09:00:00-05:00",
+      "category": "notes",
+      "body": "This post lives in `content/posts.json`. Edit it at /admin, and the save becomes a commit.\n\n## What you get\n\n- Markdown with a live preview\n- Drafts and scheduled posts\n- Version history and restore"
+    },
+    {
+      "slug": "short-entry",
+      "title": "A post with only a title is a short entry",
+      "at": "2026-01-04T12:30:00-05:00",
+      "category": "notes",
+      "body": ""
+    }
+  ]
+}

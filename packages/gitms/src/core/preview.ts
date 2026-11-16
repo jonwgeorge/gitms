@@ -22,15 +22,16 @@ export const postPreviewHref = (cms: ResolvedConfig, slug: string) => `${cms.bas
 export const pagePreviewHref = (cms: ResolvedConfig, slug: string) => `${cms.basePath}/preview/pages/${encodeURIComponent(slug)}`;
 
 /** Where the editor's "View on site" goes: the public URL when it's live, the preview when it's a draft or scheduled. */
-export function postViewHref(cms: ResolvedConfig, post: { slug?: unknown; draft?: unknown; body?: unknown; at?: unknown }, now: number = Date.now()): string | null {
+/** `canPreview`: the site gave the admin a post preview component. */
+export function postViewHref(cms: ResolvedConfig, post: { slug?: unknown; draft?: unknown; body?: unknown; at?: unknown }, canPreview: boolean, now: number = Date.now()): string | null {
   const live = livePostUrl(cms, post, now);
   if (live) return live;
-  return postPreviewState(post, now) && cms.preview.post ? postPreviewHref(cms, String(post.slug ?? "")) : null;
+  return postPreviewState(post, now) && canPreview ? postPreviewHref(cms, String(post.slug ?? "")) : null;
 }
 
-export function pageViewHref(cms: ResolvedConfig, page: { slug?: unknown; draft?: unknown }): string | null {
+export function pageViewHref(cms: ResolvedConfig, page: { slug?: unknown; draft?: unknown }, canPreview: boolean): string | null {
   if (!cms.pages) return null;
   const slug = String(page.slug ?? "");
   if (!pagePreviewState(page)) return routeFor(cms.pages.route, slug);
-  return cms.preview.page ? pagePreviewHref(cms, slug) : null;
+  return canPreview ? pagePreviewHref(cms, slug) : null;
 }

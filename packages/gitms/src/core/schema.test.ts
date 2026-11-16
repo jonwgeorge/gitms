@@ -94,7 +94,7 @@ describe("defineGitms", () => {
     [{ siteUrl: "https://e.x", posts: { file: "c/p.json", route: "/blog" } }, /:slug/],
     [{ siteUrl: "https://e.x", posts: { file: "c/p.json", route: "/:slug", fields: { title: { type: "text", label: "T" } } } }, /posts.fields.title/],
     [{ siteUrl: "https://e.x", uploads: { dir: "uploads", publicPath: "/uploads" } }, /uploads.dir/],
-    [{ siteUrl: "https://e.x", sections: [{ slug: "posts", label: "x", component: () => null }] }, /sections/],
+    [{ siteUrl: "https://e.x", sections: [{ slug: "posts", label: "x" }] }, /sections/],
   ])("refuses a bad config: %j", (config, message) => {
     expect(() => defineGitms(config as Parameters<typeof defineGitms>[0])).toThrowError(message);
   });

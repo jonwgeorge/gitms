@@ -4,19 +4,40 @@
   "description": "A small Git-backed CMS for Next.js: content in your repo, every save a commit.",
   "license": "MIT",
   "type": "module",
-  "repository": { "type": "git", "url": "git+https://github.com/jonwgeorge/gitms.git", "directory": "packages/gitms" },
-  "keywords": ["cms", "nextjs", "git", "github", "markdown", "headless"],
-  "files": ["src", "!src/**/*.test.ts", "!src/**/*.test.tsx", "bin", "README.md", "LICENSE"],
-  "bin": { "gitms": "./bin/gitms.mjs" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonwgeorge/gitms.git",
+    "directory": "packages/gitms"
+  },
+  "keywords": [
+    "cms",
+    "nextjs",
+    "git",
+    "github",
+    "markdown",
+    "headless"
+  ],
+  "files": [
+    "src",
+    "!src/**/*.test.ts",
+    "!src/**/*.test.tsx",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "bin": {
+    "gitms": "./bin/gitms.mjs"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./admin": "./src/admin/index.ts",
-    "./proxy": "./src/next/proxy.ts",
-    "./next-config": "./src/next/next-config.ts",
+    "./admin/ui": "./src/admin/ui.ts",
+    "./server": "./src/server.ts",
     "./content": "./src/content.ts",
     "./markdown": "./src/core/markdown.ts",
     "./Markdown": "./src/admin/Markdown.tsx",
-    "./admin.css": "./src/admin/theme.css"
+    "./proxy": "./src/next/proxy.ts",
+    "./next-config": "./src/next/next-config.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

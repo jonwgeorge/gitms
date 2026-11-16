@@ -75,7 +75,7 @@ export function savedNote(outcome: Extract<Outcome, { ok: true }>, draft = false
         message: outcome.commitSha ? `Saved. Committed ${outcome.commitSha.slice(0, 7)} to ${outcome.target}.` : `Saved to ${outcome.target}.`,
         commitUrl: outcome.commitUrl,
         commitSha: outcome.commitSha,
-        live: draft ? DRAFT_NOTE : "Live after the deploy finishes (~1 min).",
+        live: draft ? DRAFT_NOTE : "Live once your site rebuilds from the commit.",
       }
     : { message: "Saved to the local content files.", commitUrl: null, commitSha: null, live: "Local fs store, no commit: reload the dev site to see it." };
 }

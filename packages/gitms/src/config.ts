@@ -1,9 +1,10 @@
 /**
  * The site's gitms config: what `defineGitms()` takes and the resolved shape
  * the rest of the package reads. Client-safe (no secrets; those come from the
- * environment, see core/env.ts).
+ * environment, see core/env.ts). Pure data apart from zod schemas, so
+ * next.config can import it too; React components (custom sections, previews)
+ * are handed to `createAdmin()` in the admin page instead.
  */
-import type { ComponentType } from "react";
 import type { ZodType } from "zod";
 
 /** A custom post field shown in the editor under the title. */
@@ -80,12 +81,11 @@ export type UploadsConfig = {
   readonly maxBytes?: number;
 };
 
-/** A section of your own in the admin sidebar, rendered by your component. */
+/** A section of your own in the admin sidebar; its component is given to `createAdmin()` under the same slug. */
 export type CustomSection = {
   /** URL segment under the admin path, e.g. "settings". */
   readonly slug: string;
   readonly label: string;
-  readonly component: ComponentType<{ readonly searchParams: Record<string, string | string[] | undefined> }>;
 };
 
 /** A content file of your own (for custom sections), saved through the same store. */
@@ -111,6 +111,12 @@ export type GitmsConfig = {
   };
   /** Sent to the GitHub API. Defaults to "gitms". */
   readonly userAgent?: string;
+  /**
+   * The request header holding the client's IP, for login throttling. It must
+   * be one your host sets itself (a client must not be able to fake it).
+   * Defaults to "cf-connecting-ip" (Cloudflare); on Vercel use "x-real-ip".
+   */
+  readonly clientIpHeader?: string;
   readonly posts?: PostsConfig;
   readonly pages?: PagesConfig;
   readonly redirects?: RedirectsConfig;
@@ -118,11 +124,6 @@ export type GitmsConfig = {
   readonly sections?: readonly CustomSection[];
   /** Content files your custom sections read and save, by key. */
   readonly files?: Readonly<Record<string, ExtraFile>>;
-  /** Renders a draft or scheduled item for preview, inside your site's layout. */
-  readonly preview?: {
-    readonly post?: ComponentType<{ readonly post: Record<string, unknown> }>;
-    readonly page?: ComponentType<{ readonly page: Record<string, unknown> }>;
-  };
 };
 
 export type ResolvedConfig = {
@@ -132,13 +133,13 @@ export type ResolvedConfig = {
   readonly timeZone: string;
   readonly brand: { readonly name: string };
   readonly userAgent: string;
+  readonly clientIpHeader: string;
   readonly posts: (Required<Omit<PostsConfig, "fields">> & { readonly fields: Readonly<Record<string, CustomField>> }) | null;
   readonly pages: Required<PagesConfig> | null;
   readonly redirects: Required<RedirectsConfig> | null;
   readonly uploads: Required<UploadsConfig> | null;
   readonly sections: readonly CustomSection[];
   readonly files: Readonly<Record<string, ExtraFile>>;
-  readonly preview: NonNullable<GitmsConfig["preview"]>;
 };
 
 const BASE_PATH = /^\/[a-z0-9][a-z0-9_-]{0,63}$/;
@@ -250,13 +251,13 @@ export function defineGitms(config: GitmsConfig): ResolvedConfig {
     timeZone,
     brand: { name: config.brand?.name ?? "admin" },
     userAgent: config.userAgent ?? "gitms",
+    clientIpHeader: (config.clientIpHeader ?? "cf-connecting-ip").toLowerCase(),
     posts,
     pages,
     redirects,
     uploads,
     sections,
     files,
-    preview: config.preview ?? {},
   };
 }
 

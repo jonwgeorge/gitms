@@ -1,0 +1,906 @@
+/* The /admin area: hairlines, surface panels and tokens only (HANDOFF §1). */
+
+/* ---------- shell: a sidebar on desktop, a top bar under 720px ---------- */
+
+.shell {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.shell[data-bare] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The column runs the page's full height; its contents stick to the viewport. */
+.side {
+  background: var(--gitms-surface);
+  border-right: 1px solid var(--gitms-line);
+}
+
+.sideInner {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gitms-space-4);
+  height: 100vh;
+  padding: var(--gitms-space-4) var(--gitms-space-3);
+}
+
+.brand {
+  margin: 0;
+  color: var(--gitms-ink-muted);
+}
+
+.user {
+  color: var(--gitms-accent);
+}
+
+.nav {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gitms-space-2);
+  padding: var(--gitms-space-2) var(--gitms-space-2);
+  border-left: 2px solid transparent;
+  color: var(--gitms-ink);
+  text-decoration: none;
+}
+
+.nav a:hover {
+  background: var(--gitms-bg);
+}
+
+.nav a[aria-current="page"] {
+  border-left-color: var(--gitms-accent);
+  background: var(--gitms-bg);
+  color: var(--gitms-accent);
+}
+
+.navCount {
+  color: var(--gitms-ink-muted);
+}
+
+.sideFoot {
+  display: grid;
+  gap: var(--gitms-space-2);
+  margin-top: auto;
+}
+
+.sideFoot a {
+  color: var(--gitms-ink-muted);
+}
+
+.top {
+  display: none;
+}
+
+.content {
+  min-width: 0;
+}
+
+.main {
+  max-width: 1080px;
+  padding: var(--gitms-space-4) var(--gitms-gutter) var(--gitms-space-5);
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gitms-space-2);
+  margin: 0 0 var(--gitms-space-2);
+  padding: 0;
+  list-style: none;
+  color: var(--gitms-ink-muted);
+}
+
+.crumbs li + li::before {
+  content: "/";
+  margin-right: var(--gitms-space-2);
+}
+
+.crumbs a {
+  color: var(--gitms-ink-muted);
+}
+
+.pageHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--gitms-space-3);
+  margin: 0 0 var(--gitms-space-4);
+}
+
+.pageActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gitms-space-2);
+}
+
+.title {
+  margin: 0;
+}
+
+.intro {
+  margin: 0 0 var(--gitms-space-4);
+  color: var(--gitms-ink-muted);
+  max-width: 40em;
+}
+
+.panel {
+  margin: 0 0 var(--gitms-space-4);
+  padding: var(--gitms-space-3);
+  background: var(--gitms-surface);
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-0);
+}
+
+.panel > h2 {
+  margin: 0 0 var(--gitms-space-3);
+}
+
+.form {
+  display: grid;
+  gap: var(--gitms-space-3);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gitms-space-2);
+}
+
+.hint {
+  margin: 0;
+  color: var(--gitms-ink-muted);
+}
+
+/* One editable row (a link, a list item). */
+.row {
+  margin: 0;
+  padding: var(--gitms-space-2) var(--gitms-space-3);
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-0);
+  background: var(--gitms-bg);
+  min-width: 0;
+}
+
+.row > legend {
+  padding: 0 var(--gitms-space-1);
+  color: var(--gitms-ink-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gitms-space-2) var(--gitms-space-3);
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gitms-space-2);
+  margin-top: var(--gitms-space-2);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gitms-space-1);
+  min-width: 0;
+}
+
+.label {
+  color: var(--gitms-ink-muted);
+}
+
+.input {
+  width: 100%;
+  min-height: calc(var(--gitms-space-5) - var(--gitms-space-2));
+  padding: var(--gitms-space-2);
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-sm);
+  background: var(--gitms-surface);
+  color: var(--gitms-ink);
+  font: inherit;
+}
+
+textarea.input {
+  min-height: calc(var(--gitms-space-5) * 2);
+  resize: vertical;
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--gitms-fault);
+  outline: 1px solid var(--gitms-fault);
+}
+
+/* Keep the site-wide focus ring on an invalid field (the rule above would hide it). */
+.input[aria-invalid="true"]:focus-visible {
+  outline: 2px solid var(--gitms-accent);
+  outline-offset: 2px;
+}
+
+.error {
+  margin: 0;
+  color: var(--gitms-fault);
+}
+
+.button {
+  cursor: pointer;
+  font: inherit;
+}
+
+.button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.danger:hover {
+  border-color: var(--gitms-fault);
+  color: var(--gitms-fault);
+}
+
+.status {
+  padding: var(--gitms-space-3);
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-0);
+  background: var(--gitms-surface);
+}
+
+.status:empty {
+  display: none;
+}
+
+.status[data-kind="error"] {
+  border-color: var(--gitms-fault);
+}
+
+.status[data-kind="saved"] {
+  border-color: var(--gitms-accent);
+}
+
+.status p,
+.status ul {
+  margin: 0;
+}
+
+.status ul {
+  margin-top: var(--gitms-space-2);
+  padding-left: var(--gitms-space-4);
+}
+
+.statusTitle[data-kind="error"] {
+  color: var(--gitms-fault);
+}
+
+.statusTitle[data-kind="saved"] {
+  color: var(--gitms-accent);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--gitms-space-1) var(--gitms-space-3);
+  margin: 0;
+}
+
+.facts dt {
+  color: var(--gitms-ink-muted);
+}
+
+.facts dd {
+  margin: 0;
+  min-width: 0;
+}
+
+.login {
+  max-width: 30em;
+}
+
+@media (max-width: 719.98px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .wide {
+    grid-column: auto;
+  }
+}
+
+/* ---------- flash messages (after a redirect) ---------- */
+
+.flash {
+  margin: 0 0 var(--gitms-space-4);
+}
+
+/* ---------- lists (posts) ---------- */
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gitms-space-3);
+  margin: 0 0 var(--gitms-space-3);
+  padding: 0;
+  list-style: none;
+}
+
+.tabs a {
+  color: var(--gitms-ink-muted);
+  text-decoration: none;
+}
+
+.tabs a[aria-current="page"] {
+  color: var(--gitms-accent);
+  text-decoration: underline;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: var(--gitms-space-2) var(--gitms-space-2);
+  border-bottom: 1px solid var(--gitms-line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  color: var(--gitms-ink-muted);
+  font-weight: inherit;
+}
+
+.table tbody tr:hover {
+  background: var(--gitms-bg);
+}
+
+.table .num {
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--gitms-ink-muted);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gitms-space-1);
+  padding: 0 var(--gitms-space-2);
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-sm);
+  white-space: nowrap;
+}
+
+.badge[data-tone="ok"] {
+  border-color: var(--gitms-accent);
+  color: var(--gitms-accent);
+}
+
+.badge[data-tone="info"] {
+  border-color: var(--gitms-ink-muted);
+  color: var(--gitms-ink);
+}
+
+.badge[data-tone="warn"] {
+  border-color: var(--gitms-warn);
+  color: var(--gitms-warn);
+}
+
+.empty {
+  padding: var(--gitms-space-4);
+  border: 1px dashed var(--gitms-line);
+  color: var(--gitms-ink-muted);
+  text-align: center;
+}
+
+/* ---------- dashboard ---------- */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--gitms-space-3);
+  margin: 0 0 var(--gitms-space-4);
+}
+
+.tile {
+  display: grid;
+  align-content: start;
+  gap: var(--gitms-space-2);
+  padding: var(--gitms-space-3);
+  background: var(--gitms-surface);
+  border: 1px solid var(--gitms-line);
+}
+
+.tile h2 {
+  margin: 0;
+}
+
+.tile p {
+  margin: 0;
+}
+
+.tileLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gitms-space-3);
+  margin-top: var(--gitms-space-1);
+}
+
+/* ---------- editor pages: main column + side column ---------- */
+
+/* Side by side when there is room; the side column wraps under the main one on narrow screens. */
+.editor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gitms-space-4);
+  align-items: flex-start;
+}
+
+.editorSide {
+  position: sticky;
+  top: var(--gitms-space-3);
+  flex: 1 1 240px;
+  max-width: 100%;
+  display: grid;
+  gap: var(--gitms-space-3);
+}
+
+.editorMain {
+  flex: 999 1 440px;
+  display: grid;
+  gap: var(--gitms-space-3);
+  min-width: 0;
+}
+
+.section {
+  margin: 0;
+  padding: var(--gitms-space-3);
+  background: var(--gitms-surface);
+  border: 1px solid var(--gitms-line);
+  min-width: 0;
+}
+
+.section > legend,
+.section > h2 {
+  padding: 0 var(--gitms-space-1);
+  color: var(--gitms-ink-muted);
+}
+
+.section > h2 {
+  margin: 0 0 var(--gitms-space-2);
+  padding: 0;
+}
+
+.stack {
+  display: grid;
+  gap: var(--gitms-space-3);
+}
+
+.saveBar {
+  display: grid;
+  gap: var(--gitms-space-2);
+}
+
+.saveBar .button {
+  justify-content: center;
+}
+
+.dirty {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gitms-space-2);
+  color: var(--gitms-warn);
+}
+
+.kbd {
+  padding: 0 4px;
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-sm);
+  font-family: var(--gitms-font-mono);
+  font-size: 12px;
+}
+
+/* Write / Preview for a post body. */
+.bodyTabs {
+  display: flex;
+  gap: var(--gitms-space-1);
+  margin-bottom: calc(var(--gitms-space-1) * -1);
+}
+
+.bodyTabs button {
+  padding: var(--gitms-space-1) var(--gitms-space-3);
+  border: 1px solid var(--gitms-line);
+  border-bottom: 0;
+  background: var(--gitms-bg);
+  color: var(--gitms-ink-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.bodyTabs button[aria-selected="true"] {
+  background: var(--gitms-surface);
+  color: var(--gitms-ink);
+}
+
+.bodyInput {
+  min-height: 420px;
+  font-family: var(--gitms-font-mono);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.preview {
+  min-height: 420px;
+  padding: var(--gitms-space-3);
+  border: 1px solid var(--gitms-line);
+  background: var(--gitms-bg);
+}
+
+.danger {
+  color: var(--gitms-fault);
+}
+
+.dangerZone {
+  border-color: var(--gitms-fault);
+}
+
+.dangerZone summary {
+  cursor: pointer;
+  color: var(--gitms-fault);
+}
+
+.dangerZone[open] summary {
+  margin-bottom: var(--gitms-space-2);
+}
+
+.iconButton {
+  min-width: 40px;
+  padding: var(--gitms-space-1) var(--gitms-space-2);
+  justify-content: center;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gitms-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips li {
+  padding: 0 var(--gitms-space-1);
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-sm);
+  color: var(--gitms-ink-muted);
+}
+
+.choices {
+  display: grid;
+  gap: var(--gitms-space-1);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.choices label {
+  display: flex;
+  gap: var(--gitms-space-2);
+  align-items: baseline;
+  cursor: pointer;
+}
+
+@media (max-width: 719.98px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .side {
+    display: none;
+  }
+
+  .top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--gitms-space-2);
+    padding: var(--gitms-space-2) var(--gitms-space-3);
+    background: var(--gitms-surface);
+    border-bottom: 1px solid var(--gitms-line);
+  }
+
+  .topRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gitms-space-2);
+  }
+
+  /* The prompt gives way so Log out stays on screen at phone width. */
+  .topRow > :first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .toolbar {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+
+  .topNav {
+    display: flex;
+    gap: var(--gitms-space-3);
+    margin: 0;
+    padding: 0 0 var(--gitms-space-1);
+    overflow-x: auto;
+    list-style: none;
+  }
+
+  .topNav a {
+    display: inline-block;
+    padding-block: var(--gitms-space-1);
+    color: var(--gitms-ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .topNav a[aria-current="page"] {
+    color: var(--gitms-accent);
+    text-decoration: underline;
+  }
+
+  .main {
+    padding: var(--gitms-space-3) var(--gitms-space-3) var(--gitms-space-5);
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tr {
+    display: grid;
+    padding: var(--gitms-space-2) 0;
+    border-bottom: 1px solid var(--gitms-line);
+  }
+
+  .table td {
+    padding: 0 var(--gitms-space-1);
+    border: 0;
+  }
+
+}
+
+.linkButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gitms-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.plainList {
+  display: grid;
+  gap: var(--gitms-space-1);
+  margin: var(--gitms-space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- list search ---------- */
+
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--gitms-space-2);
+  margin: 0 0 var(--gitms-space-3);
+}
+
+.search .field {
+  flex: 1 1 260px;
+  max-width: 420px;
+}
+
+/* Long paths (redirect URLs, slugs) wrap instead of widening the page. */
+.breakable,
+.breakable code {
+  overflow-wrap: anywhere;
+}
+
+.search > a {
+  align-self: center;
+}
+
+/* ---------- version history ---------- */
+
+.versions {
+  display: grid;
+  gap: var(--gitms-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.versions > li {
+  display: grid;
+  gap: var(--gitms-space-2);
+}
+
+.versions p {
+  margin: 0;
+}
+
+.versionHead {
+  display: grid;
+  gap: var(--gitms-space-1);
+}
+
+.versionBody > summary {
+  cursor: pointer;
+}
+
+.versionBody[open] > summary {
+  margin-bottom: var(--gitms-space-2);
+}
+
+.versionText {
+  max-height: 24em;
+  margin: var(--gitms-space-2) 0 0;
+  padding: var(--gitms-space-2);
+  overflow: auto;
+  background: var(--gitms-bg);
+  border: 1px solid var(--gitms-line);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- settings: social links as one compact row each ---------- */
+
+.sectionIntro {
+  margin: 0 0 var(--gitms-space-3);
+}
+
+.links {
+  display: grid;
+  gap: var(--gitms-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linkHead,
+.link {
+  display: grid;
+  /* The last column fits the three 40px row buttons, so the header lines up with the rows. */
+  grid-template-columns: var(--gitms-space-4) minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 1fr) calc(3 * 40px + 2 * var(--gitms-space-1));
+  gap: var(--gitms-space-2);
+  align-items: start;
+}
+
+.linkHead {
+  margin: 0 0 var(--gitms-space-1);
+  padding: 0 var(--gitms-space-2);
+  border: 1px solid transparent;
+  color: var(--gitms-ink-muted);
+}
+
+.link {
+  padding: var(--gitms-space-2);
+  border: 1px solid var(--gitms-line);
+  background: var(--gitms-bg);
+}
+
+.link:focus-within {
+  border-color: var(--gitms-ink-muted);
+}
+
+/* Column headers label the fields on wide screens; each field keeps its own label for screen readers. */
+.link .label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.linkNum {
+  align-self: start;
+  padding-top: 11px;
+  color: var(--gitms-ink-muted);
+}
+
+.linkActions {
+  display: flex;
+  gap: var(--gitms-space-1);
+}
+
+.iconButton {
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+}
+
+.iconButton:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.contactPreview {
+  display: grid;
+  gap: var(--gitms-space-2);
+  margin: 0 0 var(--gitms-space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.contactPreview li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 var(--gitms-space-2);
+  min-width: 0;
+  padding-bottom: var(--gitms-space-2);
+  border-bottom: 1px dashed var(--gitms-line);
+}
+
+.contactPreview li span:last-child {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 719.98px) {
+  .linkHead {
+    display: none;
+  }
+
+  .link {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .link .label {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+  }
+
+  .linkNum {
+    grid-column: 1 / -1;
+    padding: 0;
+  }
+
+  .linkHref {
+    grid-column: 1 / -1;
+  }
+
+  .linkActions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+}

@@ -54,3 +54,10 @@ export function livePostUrl(cms: ResolvedConfig, post: { slug?: unknown; draft?:
   if (!cms.posts || !isLivePost(post, now)) return null;
   return routeFor(cms.posts.route, String(post.slug ?? ""));
 }
+
+/** How the admin labels a post: Draft, Scheduled (dated in the future) or Published. */
+export function postStatus(post: { draft?: unknown; at?: unknown }, now: number = Date.now()) {
+  if (post.draft === true) return { label: "Draft", tone: "warn" } as const;
+  if (isScheduled(post, now)) return { label: "Scheduled", tone: "info" } as const;
+  return { label: "Published", tone: "ok" } as const;
+}
