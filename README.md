@@ -3,7 +3,8 @@
 A small, Git-backed CMS for Next.js. Your content lives in your repo as JSON
 with markdown bodies, and every save in the admin is a commit.
 
-> Pre-release (0.x). The API may change before 1.0.
+> Not published to npm: sites install it straight from GitHub, so a change
+> here reaches every site that uses it. See [docs/sites.md](docs/sites.md).
 
 ## Why
 
@@ -31,7 +32,7 @@ with markdown bodies, and every save in the admin is a commit.
 ## Quick start
 
 ```sh
-npm install gitms zod
+npm install github:jonwgeorge/gitms#main zod
 ```
 
 Then follow [docs/setup.md](docs/setup.md): a config file, three small files in
@@ -41,6 +42,7 @@ shows a complete site.
 ## Docs
 
 - [Setup](docs/setup.md): install, wire it into Next.js, deploy
+- [Using gitms in your sites](docs/sites.md): installing from GitHub and keeping every site up to date
 - [Configuration](docs/configuration.md): every option of `defineGitms()`
 - [Reading content](docs/content.md): using the content in your pages
 - [Custom sections](docs/custom-sections.md): editing your own content files
@@ -54,8 +56,9 @@ is a GitHub repository; locally, `next dev` saves to the files on disk.
 
 ## Repository layout
 
-- `packages/gitms`: the npm package
+- `src`, `bin`: the package (installed from this repo)
 - `examples/blog`: a small site using it
+- `templates/update-gitms.yml`: the workflow that keeps a site on the newest gitms
 
 ## License
 
