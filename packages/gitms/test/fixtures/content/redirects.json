@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "from": "/old-about",
+      "to": "/about",
+      "permanent": true
+    }
+  ]
+}
