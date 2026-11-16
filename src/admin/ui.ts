@@ -10,3 +10,5 @@ export { Markdown } from "./Markdown";
 /** The admin's own class names (stack, section, actions…), for custom sections. */
 export { default as adminStyles } from "./admin.module.css";
 export { default as buttonStyles } from "./Button.module.css";
+/** Form ids and state shapes, so your own forms line up with saveWholeFile's errors and focus. */
+export { buttonId, errorId, fieldId, fieldLabel, type FieldErrors, type FormState, type SavedNote } from "../core/drafts";
