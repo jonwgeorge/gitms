@@ -114,6 +114,11 @@ export type GitmsConfig = {
   readonly brand?: {
     /** Shown before the admin path in the sidebar, e.g. "admin@example". */
     readonly name?: string;
+    /**
+     * Replaces the whole sidebar title, e.g. "Quest log". Without it the
+     * title reads like a shell prompt: "<name>:<basePath>$".
+     */
+    readonly title?: string;
   };
   /** Sent to the GitHub API. Defaults to "gitms". */
   readonly userAgent?: string;
@@ -140,7 +145,7 @@ export type ResolvedConfig = {
   readonly siteUrl: string;
   readonly hosts: readonly string[];
   readonly timeZone: string;
-  readonly brand: { readonly name: string };
+  readonly brand: { readonly name: string; readonly title: string | null };
   readonly userAgent: string;
   readonly clientIpHeader: string;
   readonly posts: (Required<Omit<PostsConfig, "fields">> & { readonly fields: Readonly<Record<string, CustomField>> }) | null;
@@ -258,7 +263,7 @@ export function defineGitms(config: GitmsConfig): ResolvedConfig {
     siteUrl,
     hosts,
     timeZone,
-    brand: { name: config.brand?.name ?? "admin" },
+    brand: { name: config.brand?.name ?? "admin", title: config.brand?.title?.trim() || null },
     userAgent: config.userAgent ?? "gitms",
     clientIpHeader: (config.clientIpHeader ?? "cf-connecting-ip").toLowerCase(),
     posts,

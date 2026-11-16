@@ -84,6 +84,11 @@ describe("defineGitms", () => {
   it("fills in defaults", () => {
     const c = defineGitms({ siteUrl: "https://example.org" });
     expect(c).toMatchObject({ basePath: "/admin", siteUrl: "https://example.org/", hosts: ["example.org"], timeZone: "UTC", posts: null, pages: null });
+    expect(c.brand).toEqual({ name: "admin", title: null });
+  });
+
+  it("takes a site's own admin title", () => {
+    expect(defineGitms({ siteUrl: "https://e.x", brand: { title: " Quest log " } }).brand).toEqual({ name: "admin", title: "Quest log" });
   });
 
   it.each([

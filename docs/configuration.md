@@ -31,7 +31,8 @@ export default defineGitms({
 | `basePath` | `"/admin"` | Where the admin lives. Must match the folder in `app/` and the proxy matcher. |
 | `hosts` | `[]` | Extra hostnames that count as this site when someone pastes a full URL into a redirect. The `siteUrl` host is always included. |
 | `timeZone` | `"UTC"` | IANA zone the editor shows and takes post dates in. Dates are stored as ISO 8601 with the offset. |
-| `brand.name` | `"admin"` | Shown at the top of the admin sidebar. |
+| `brand.name` | `"admin"` | Shown at the top of the admin sidebar, as `<name>:<basePath>$`. |
+| `brand.title` | none | Replaces that whole sidebar title with your own text, e.g. `"Quest log"`. |
 | `userAgent` | `"gitms"` | Sent to the GitHub API. |
 | `clientIpHeader` | `"cf-connecting-ip"` | The request header with the client's IP, for login throttling. It must be one your host sets itself; see [security.md](security.md). |
 
