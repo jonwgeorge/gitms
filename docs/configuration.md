@@ -139,8 +139,9 @@ sections: [{ slug: "settings", label: "Settings" }],
 files: { settings: { path: "content/settings.json", schema: settingsSchema } },
 ```
 
-Each section gets a sidebar link and a dashboard tile. Add `dashboard: false`
-to keep a section in the sidebar only.
+Each section gets a sidebar link and a dashboard tile, except a settings
+section (label or slug "Settings"), which is in the sidebar only. Set
+`dashboard: false` or `true` on a section to choose for yourself.
 
 ## Environment variables
 

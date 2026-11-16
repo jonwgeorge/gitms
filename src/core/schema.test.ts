@@ -100,6 +100,28 @@ describe("defineGitms", () => {
   });
 });
 
+describe("dashboard tiles", () => {
+  it("leave settings sections off the dashboard unless asked", () => {
+    const { sections } = defineGitms({
+      siteUrl: "https://e.x",
+      sections: [
+        { slug: "now", label: "Now" },
+        { slug: "site", label: "Settings" },
+        { slug: "settings", label: "Site options" },
+        { slug: "prefs", label: "Settings", dashboard: true },
+        { slug: "notes", label: "Notes", dashboard: false },
+      ],
+    });
+    expect(sections.map((s) => [s.slug, s.dashboard])).toEqual([
+      ["now", true],
+      ["site", false],
+      ["settings", false],
+      ["prefs", true],
+      ["notes", false],
+    ]);
+  });
+});
+
 describe("isSafeHref", () => {
   it.each(["/notes/x", "/", "https://example.com/a?b=c#d"])("allows %s", (h) => {
     expect(isSafeHref(h)).toBe(true);
