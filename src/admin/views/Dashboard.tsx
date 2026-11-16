@@ -1,29 +1,34 @@
 import Link from "next/link";
 import { postStatus } from "../../core/redirects";
 import { attempt, type LastCommit } from "../../core/store";
+import { installedCommit, sourceToken, updateStatus } from "../../core/updates";
 import { admin, cms } from "../../runtime";
 import { AdminShell } from "../AdminShell";
 import btn from "../Button.module.css";
 import styles from "../admin.module.css";
+import { repoOf } from "../Flash";
 import { postDate } from "../format";
-import { plural, readList, signedIn } from "./common";
+import { GitmsVersion, UpdateNotice } from "../UpdateNotice";
+import { one, plural, readList, signedIn, type SearchParams } from "./common";
 
 const counts = (items: Record<string, unknown>[]) => {
   const drafts = items.filter((p) => p.draft === true).length;
   return `${items.length - drafts} published · ${plural(drafts, "draft")}`;
 };
 
-/** The admin home: a tile per section, the newest posts and where saves go. */
-export async function Dashboard() {
+/** The admin home: a gitms update notice when there's one, a tile per section, the newest posts and where saves go. */
+export async function Dashboard({ searchParams = {} }: { searchParams?: SearchParams }) {
   const s = await signedIn();
   if ("page" in s) return s.page;
   const c = cms();
-  const [postsFile, pagesFile, redirectsFile, commit] = await Promise.all([
+  const [postsFile, pagesFile, redirectsFile, commit, update] = await Promise.all([
     c.posts ? readList(s.store, "posts", "posts") : null,
     c.pages ? readList(s.store, "pages", "pages") : null,
     c.redirects ? readList(s.store, "redirects", "redirects") : null,
     attempt(() => s.store.lastCommit()),
+    updateStatus({ installed: installedCommit(), token: sourceToken(s.gate.config.store), userAgent: c.userAgent }),
   ]);
+  const repo = repoOf(s.store);
   const posts = postsFile?.ok ? [...postsFile.items].sort((a, b) => Date.parse(String(b.at)) - Date.parse(String(a.at))) : [];
   const last: LastCommit | null = commit.ok ? commit.value : null;
 
@@ -39,6 +44,7 @@ export async function Dashboard() {
         ) : null
       }
     >
+      <UpdateNotice status={update} outcome={one(searchParams.update)} actionsUrl={repo ? `https://github.com/${repo}/actions` : null} />
       <div className={styles.tiles}>
         {c.posts && postsFile ? (
           <section className={styles.tile} aria-labelledby="tile-posts">
@@ -151,6 +157,10 @@ export async function Dashboard() {
           </dd>
           <dt>Going live</dt>
           <dd>Each save is a commit; your host rebuilds and deploys the site from it.</dd>
+          <dt>gitms</dt>
+          <dd>
+            <GitmsVersion status={update} />
+          </dd>
         </dl>
       </section>
     </AdminShell>

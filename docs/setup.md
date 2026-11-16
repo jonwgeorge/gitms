@@ -128,6 +128,7 @@ GITMS_ADMIN_SESSION_SECRET=...
 GITMS_GITHUB_TOKEN=github_pat_...
 GITMS_GITHUB_REPO=owner/name
 GITMS_GITHUB_BRANCH=main        # optional, defaults to main
+GITMS_SOURCE_TOKEN=...          # optional: only if gitms is private (see sites.md)
 ```
 
 Your host must rebuild the site on each push to that branch (most do by

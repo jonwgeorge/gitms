@@ -904,3 +904,30 @@ textarea.input {
     justify-content: flex-end;
   }
 }
+
+/* ---------- gitms updates (dashboard) ---------- */
+
+.update {
+  border-color: var(--gitms-accent);
+}
+
+.update > p {
+  margin: 0 0 var(--gitms-space-2);
+}
+
+.changes {
+  margin: 0 0 var(--gitms-space-3);
+  padding-left: var(--gitms-space-4);
+  overflow-wrap: anywhere;
+}
+
+.updateActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gitms-space-2);
+  margin: 0 0 var(--gitms-space-2);
+}
+
+.inlineForm {
+  display: inline;
+}

@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import site from "gitms-site-config";
 import { defineGitms } from "../config";
 import { SESSION_COOKIE, signSession } from "../core/session";
-import { gitmsRedirects, withGitms } from "./next-config";
+import { gitmsRedirects, installedGitmsCommit, withGitms } from "./next-config";
 import { gitmsProxy, isAdminPath } from "./proxy";
 
 const SECRET = "p".repeat(40);
@@ -75,6 +75,18 @@ describe("withGitms", () => {
     const config = withGitms(cms, { redirects: async () => [{ source: "/mine", destination: "/", permanent: false }] }, { root });
     const all = await config.redirects!();
     expect(all.at(-1)).toEqual({ source: "/mine", destination: "/", permanent: false });
+  });
+
+  it("records the gitms commit the lockfile pins, for the admin's update notice", async () => {
+    const { mkdtempSync, writeFileSync } = await import("node:fs");
+    const { tmpdir } = await import("node:os");
+    const dir = mkdtempSync(join(tmpdir(), "gitms-lock-"));
+    const sha = "c".repeat(40);
+    writeFileSync(join(dir, "package-lock.json"), JSON.stringify({ packages: { "node_modules/gitms": { resolved: `git+ssh://git@github.com/jonwgeorge/gitms.git#${sha}` } } }));
+    const cms = defineGitms({ siteUrl: "https://example.com/" });
+    expect(installedGitmsCommit(dir)).toBe(sha);
+    expect(withGitms(cms, { env: { MINE: "1" } }, { root: dir }).env).toEqual({ MINE: "1", GITMS_INSTALLED_COMMIT: sha });
+    expect(withGitms(cms, {}, { root }).env).toEqual({ GITMS_INSTALLED_COMMIT: "" });
   });
 
   it("reads a missing redirects file as empty, and names a bad one", () => {

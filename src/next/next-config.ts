@@ -7,13 +7,15 @@
  *
  * It points the package at your config file, lets server actions take an
  * upload, serves the redirects edited in the admin (read from the content
- * files at build time) and marks the admin noindex.
+ * files at build time), marks the admin noindex and records which gitms
+ * commit the site was built with (for the admin's update notice).
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { NextConfig } from "next";
 import type { ResolvedConfig } from "../config";
 import { readPages, readPosts, readRedirects, siteRedirects } from "../content";
+import { commitFromLock } from "../core/updates";
 
 export type WithGitmsOptions = {
   /** Your config file, relative to the project root. Defaults to "./gitms.config.ts". */
@@ -49,6 +51,15 @@ export function gitmsRedirects(cms: ResolvedConfig, root: string = process.cwd()
   return siteRedirects(cms, { posts, pages, redirects }, now);
 }
 
+/** The gitms commit the site's package-lock.json pins, or null (gitms linked locally, no lockfile). */
+export function installedGitmsCommit(root: string = process.cwd()): string | null {
+  try {
+    return commitFromLock(JSON.parse(readFileSync(resolve(root, "package-lock.json"), "utf8")));
+  } catch {
+    return null;
+  }
+}
+
 /** Bytes as Next's size string, with room for the multipart overhead. */
 const bodyLimit = (bytes: number) => `${Math.ceil(bytes / (1024 * 1024)) + 1}mb` as const;
 
@@ -59,6 +70,8 @@ export function withGitms(cms: ResolvedConfig, next: NextConfig = {}, options: W
 
   return {
     ...next,
+    // The admin compares this with gitms's newest commit to offer updates.
+    env: { ...next.env, GITMS_INSTALLED_COMMIT: installedGitmsCommit(root) ?? "" },
     // The package ships TypeScript source.
     transpilePackages: [...new Set([...(next.transpilePackages ?? []), "gitms"])],
     turbopack: {
