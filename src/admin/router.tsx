@@ -27,7 +27,7 @@ type Route = { readonly title: string; readonly render: (q: SearchParams) => Rea
 export function route(c: ResolvedConfig, path: readonly string[], components: AdminComponents = {}): Route | null {
   const [a, b, d, ...rest] = path;
   if (rest.length) return null;
-  if (a === undefined) return { title: "Dashboard", render: () => <Dashboard /> };
+  if (a === undefined) return { title: "Dashboard", render: (q) => <Dashboard searchParams={q} /> };
   if (a === "login" && b === undefined) return { title: "Log in", render: () => <Login /> };
 
   if (a === "posts" && c.posts) {

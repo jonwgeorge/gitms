@@ -71,6 +71,28 @@ After CI passes on `main`, the "Notify sites" workflow sends each site a
 `gitms-updated` event. Without these two settings it does nothing, and the
 daily run still keeps sites current.
 
+## Update notices in the admin
+
+The admin dashboard tells you when a newer gitms is out. `withGitms()` records
+the gitms commit each build was made with (from `package-lock.json`), and the
+dashboard compares it with the newest commit on gitms's `main`, at most once an
+hour. When the site is behind, it lists the new changes and offers
+**Update now**; the Publishing panel always shows the running version.
+
+**Update now** sends the site's repository the same `gitms-updated` event that
+gitms sends after CI, so the site's "Update gitms" workflow (above) runs right
+away: it moves to the newest gitms, checks the site builds, and commits. Your
+host deploys it as usual, and the notice goes away once that deploy is live. If
+you don't press it, the workflow's daily run does the same.
+
+It uses the admin's existing `GITMS_GITHUB_TOKEN` (Contents: read and write is
+what GitHub requires to send the event), so there's nothing new to set up as
+long as the site has the update workflow. The check reads gitms with that token
+too; if gitms is private and that token can't read it, set
+`GITMS_SOURCE_TOKEN` on the host to the read-only token from above. With the
+local file store (`next dev`), Update now isn't available: run
+`npm install github:jonwgeorge/gitms#main` instead.
+
 ## Changing gitms safely
 
 Everything on `main` reaches every site, so:

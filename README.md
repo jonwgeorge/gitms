@@ -28,6 +28,8 @@ with markdown bodies, and every save in the admin is a commit.
 - Draft preview rendered by your own components, for the signed-in editor only
 - Password login (scrypt), signed 12-hour sessions, login throttling
 - Your own admin sections for singleton content (site settings and the like)
+- A notice on the dashboard when a newer gitms is out, with an "Update now"
+  button (sites otherwise update themselves daily)
 
 ## Quick start
 
