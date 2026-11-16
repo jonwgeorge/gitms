@@ -39,6 +39,14 @@ type Props = {
  */
 export function AdminShell({ title, current, crumbs, actions, flash, children }: Props) {
   const { brand, basePath } = cms();
+  // A site's own title if it set one, else a shell prompt: "<name>:<basePath>$".
+  const brandMark = brand.title ? (
+    <span className={styles.user}>{brand.title}</span>
+  ) : (
+    <>
+      <span className={styles.user}>{brand.name}</span>:{basePath}$
+    </>
+  );
   const nav = current
     ? adminNav().map((item) => (
         <li key={item.href}>
@@ -61,8 +69,8 @@ export function AdminShell({ title, current, crumbs, actions, flash, children }:
         <>
           <aside className={styles.side}>
             <div className={styles.sideInner}>
-              <p className={`gitms-code ${styles.brand}`}>
-                <span className={styles.user}>{brand.name}</span>:{basePath}$
+              <p className={`gitms-code gitms-brand ${styles.brand}`}>
+                {brandMark}
               </p>
               <nav aria-label="Admin">
                 <ul className={`gitms-body ${styles.nav}`}>{nav}</ul>
@@ -75,8 +83,8 @@ export function AdminShell({ title, current, crumbs, actions, flash, children }:
           </aside>
           <header className={styles.top}>
             <div className={styles.topRow}>
-              <span className="gitms-code">
-                <span className={styles.user}>{brand.name}</span>:{basePath}$
+              <span className="gitms-code gitms-brand">
+                {brandMark}
               </span>
               <span className={styles.toolbar}>
                 <Link href="/" className="gitms-small">
