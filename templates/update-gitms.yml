@@ -1,0 +1,68 @@
+# Copy to .github/workflows/update-gitms.yml in each site that uses gitms.
+#
+# Moves the site to the newest gitms on main, checks the site still builds,
+# and commits the update to the site's default branch (your host then
+# deploys it). Runs when gitms tells it to (see docs/sites.md), once a day as
+# a fallback, and by hand from the Actions tab. If the site's checks fail,
+# nothing is committed and the failed run is your notice.
+#
+# If the gitms repository is private, add a repository secret
+# GITMS_READ_TOKEN: a fine-grained token with Contents: read on gitms only.
+
+name: Update gitms
+
+on:
+  repository_dispatch:
+    types: [gitms-updated]
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-gitms
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      # Lets npm fetch a private gitms over HTTPS (npm records GitHub deps as ssh URLs).
+      GIT_CONFIG_COUNT: ${{ secrets.GITMS_READ_TOKEN && '2' || '0' }}
+      GIT_CONFIG_KEY_0: url.https://x-access-token:${{ secrets.GITMS_READ_TOKEN }}@github.com/.insteadOf
+      GIT_CONFIG_VALUE_0: ssh://git@github.com/
+      GIT_CONFIG_KEY_1: url.https://x-access-token:${{ secrets.GITMS_READ_TOKEN }}@github.com/.insteadOf
+      GIT_CONFIG_VALUE_1: https://github.com/
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Move to the newest gitms
+        id: bump
+        run: |
+          before=$(node -p "require('./package-lock.json').packages['node_modules/gitms'].resolved")
+          npm install --no-audit --no-fund "gitms@github:jonwgeorge/gitms#main"
+          after=$(node -p "require('./package-lock.json').packages['node_modules/gitms'].resolved")
+          echo "sha=${after##*#}" >> "$GITHUB_OUTPUT"
+          if [ "$before" = "$after" ]; then echo "changed=false" >> "$GITHUB_OUTPUT"; else echo "changed=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Check the site still builds
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          npm run typecheck --if-present
+          npm test --if-present
+          npm run build
+      - name: Commit the update
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "Update gitms to ${STEPS_BUMP_OUTPUTS_SHA:0:7}"
+          git push
+        env:
+          STEPS_BUMP_OUTPUTS_SHA: ${{ steps.bump.outputs.sha }}

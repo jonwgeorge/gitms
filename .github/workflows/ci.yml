@@ -18,10 +18,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run typecheck --workspace gitms
-      - run: npm test --workspace gitms
+      - run: npm run typecheck
+      - run: npm test
       - name: Build the example site
-        run: npm run build --workspace gitms-example-blog
+        run: npm run example:build
 
   secrets:
     runs-on: ubuntu-latest

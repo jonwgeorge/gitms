@@ -1,0 +1,34 @@
+# After CI passes on main, tells each site to pick up the new gitms (each
+# site runs templates/update-gitms.yml). Does nothing until both are set:
+#   variable GITMS_SITES: the site repos, space-separated (owner/name owner/name)
+#   secret GITMS_SITES_TOKEN: a fine-grained token on those repos with Contents: read and write
+name: Notify sites
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  notify:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && vars.GITMS_SITES != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch gitms-updated to each site
+        env:
+          GH_TOKEN: ${{ secrets.GITMS_SITES_TOKEN }}
+          SITES: ${{ vars.GITMS_SITES }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          status=0
+          for repo in $SITES; do
+            if gh api "repos/$repo/dispatches" -f event_type=gitms-updated -f "client_payload[sha]=$SHA" >/dev/null; then
+              echo "notified $repo"
+            else
+              echo "::error::could not notify $repo"; status=1
+            fi
+          done
+          exit $status

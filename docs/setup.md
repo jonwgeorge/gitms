@@ -8,8 +8,12 @@ the files on disk.
 ## 1. Install
 
 ```sh
-npm install gitms zod
+npm install github:jonwgeorge/gitms#main zod
 ```
+
+gitms isn't on npm; it installs straight from this repository. If the
+repository is private, the machine installing it needs read access; see
+[sites.md](sites.md) for that and for keeping sites up to date.
 
 ## 2. Write the config
 
