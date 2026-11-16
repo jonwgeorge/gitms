@@ -86,6 +86,8 @@ export type CustomSection = {
   /** URL segment under the admin path, e.g. "settings". */
   readonly slug: string;
   readonly label: string;
+  /** Show a tile for this section on the dashboard. Defaults to true; it stays in the sidebar either way. */
+  readonly dashboard?: boolean;
 };
 
 /** A content file of your own (for custom sections), saved through the same store. */

@@ -139,6 +139,9 @@ sections: [{ slug: "settings", label: "Settings" }],
 files: { settings: { path: "content/settings.json", schema: settingsSchema } },
 ```
 
+Each section gets a sidebar link and a dashboard tile. Add `dashboard: false`
+to keep a section in the sidebar only.
+
 ## Environment variables
 
 Each is read as `GITMS_<NAME>` first, then as the bare name.
