@@ -69,7 +69,7 @@ export function AdminShell({ title, current, crumbs, actions, flash, children }:
         <>
           <aside className={styles.side}>
             <div className={styles.sideInner}>
-              <p className={`gitms-code ${styles.brand}`}>
+              <p className={`gitms-code gitms-brand ${styles.brand}`}>
                 {brandMark}
               </p>
               <nav aria-label="Admin">
@@ -83,7 +83,7 @@ export function AdminShell({ title, current, crumbs, actions, flash, children }:
           </aside>
           <header className={styles.top}>
             <div className={styles.topRow}>
-              <span className="gitms-code">
+              <span className="gitms-code gitms-brand">
                 {brandMark}
               </span>
               <span className={styles.toolbar}>
