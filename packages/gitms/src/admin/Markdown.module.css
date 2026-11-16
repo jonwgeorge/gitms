@@ -1,0 +1,102 @@
+/* A post body: readable measure, tokens only. */
+.prose {
+  max-width: 42em;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose > :last-child {
+  margin-bottom: 0;
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote,
+.prose pre {
+  margin: 0 0 var(--gitms-space-3);
+}
+
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  margin: var(--gitms-space-4) 0 var(--gitms-space-2);
+  font-family: var(--gitms-font-mono);
+  font-weight: 600;
+  line-height: 1.3;
+  /* Headings read lowercase like every other title; code in them keeps its case. */
+  text-transform: lowercase;
+}
+
+.prose :is(h2, h3, h4, h5, h6) code {
+  text-transform: none;
+}
+
+.prose h2 {
+  font-size: 22px;
+}
+
+.prose h3 {
+  font-size: 18px;
+}
+
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-size: 16px;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: var(--gitms-space-4);
+}
+
+.prose li > ul,
+.prose li > ol {
+  margin-bottom: 0;
+}
+
+.prose blockquote {
+  padding-left: var(--gitms-space-3);
+  border-left: 2px solid var(--gitms-line);
+  color: var(--gitms-ink-muted);
+}
+
+.prose hr {
+  margin: var(--gitms-space-4) 0;
+  border: 0;
+  border-top: 1px solid var(--gitms-line);
+}
+
+.prose code {
+  padding: 1px 4px;
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-sm);
+  background: var(--gitms-surface);
+  font-size: 0.9em;
+}
+
+.pre {
+  overflow-x: auto;
+  padding: var(--gitms-space-3);
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-0);
+  background: var(--gitms-surface);
+  line-height: 1.5;
+}
+
+.pre code {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: inherit;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+}

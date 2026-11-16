@@ -1,0 +1,24 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px var(--gitms-space-3);
+  border: 1px solid var(--gitms-line);
+  border-radius: var(--gitms-radius-0);
+  background: var(--gitms-surface);
+  color: var(--gitms-ink);
+  text-decoration: none;
+}
+
+.btn:hover {
+  border-color: var(--gitms-ink);
+}
+
+.btn[data-variant="primary"] {
+  background: var(--gitms-accent);
+  border-color: var(--gitms-accent);
+  color: var(--gitms-on-accent);
+}
+
+.btn[data-variant="primary"]:hover {
+  opacity: 0.9;
+}

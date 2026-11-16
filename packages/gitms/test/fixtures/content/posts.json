@@ -1,0 +1,21 @@
+{
+  "posts": [
+    {
+      "slug": "hello-world",
+      "title": "Hello, world",
+      "at": "2026-01-05T09:00:00-05:00",
+      "category": "notes",
+      "mood": "calm",
+      "body": "The first post on this example site."
+    },
+    {
+      "slug": "a-draft",
+      "title": "A draft",
+      "at": "2026-01-06T09:00:00-05:00",
+      "category": "notes",
+      "mood": "busy",
+      "draft": true,
+      "body": "Not on the site yet."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "pages": [
+    {
+      "slug": "about",
+      "title": "About",
+      "nav": true,
+      "body": "An example site for gitms. Every page and post is JSON in the repo."
+    }
+  ]
+}

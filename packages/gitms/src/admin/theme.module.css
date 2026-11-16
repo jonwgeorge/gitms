@@ -1,0 +1,93 @@
+/*
+ * The admin's look: neutral defaults for every token the admin uses. Override
+ * any of them from your own CSS, e.g.
+ *
+ *   :root .gitms-root { --gitms-accent: var(--brand); --gitms-font-sans: var(--font-sans); }
+ *
+ * The admin's type styles are plain classes (gitms-body, gitms-small, …)
+ * inside `.gitms-root`, so you can restyle those the same way.
+ */
+.root {
+  color-scheme: light dark;
+  --gitms-bg: #f6f7f8;
+  --gitms-surface: #ffffff;
+  --gitms-grid: #e6e9eb;
+  --gitms-line: #6f7b83;
+  --gitms-ink: #14181b;
+  --gitms-ink-muted: #4f5a62;
+  --gitms-accent: #1f6feb;
+  --gitms-on-accent: #ffffff;
+  --gitms-warn: #8a5300;
+  --gitms-warn-soft: #f8ead0;
+  --gitms-fault: #b42318;
+  --gitms-space-1: 4px;
+  --gitms-space-2: 8px;
+  --gitms-space-3: 16px;
+  --gitms-space-4: 24px;
+  --gitms-space-5: 48px;
+  --gitms-gutter: 32px;
+  --gitms-radius-0: 0px;
+  --gitms-radius-sm: 3px;
+  --gitms-radius-dot: 50%;
+  --gitms-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --gitms-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  background: var(--gitms-bg);
+  color: var(--gitms-ink);
+  font-family: var(--gitms-font-sans);
+  font-size: 16px;
+  line-height: 26px;
+  overflow-wrap: break-word;
+}
+
+@media (prefers-color-scheme: dark) {
+  .root {
+    --gitms-bg: #101315;
+    --gitms-surface: #171b1e;
+    --gitms-grid: #1d2327;
+    --gitms-line: #6e7b84;
+    --gitms-ink: #e4e9eb;
+    --gitms-ink-muted: #9ba7ae;
+    --gitms-accent: #6ea8fe;
+    --gitms-on-accent: #0b0f14;
+    --gitms-warn: #f3b54a;
+    --gitms-warn-soft: #382910;
+    --gitms-fault: #ff8a80;
+  }
+}
+
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+.root a {
+  color: var(--gitms-accent);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.root :focus-visible {
+  outline: 2px solid var(--gitms-accent);
+  outline-offset: 2px;
+}
+
+.root :global(.gitms-h1) { font-family: var(--gitms-font-sans); font-size: 32px; line-height: 38px; font-weight: 600; letter-spacing: -0.015em; }
+.root :global(.gitms-h2) { font-family: var(--gitms-font-sans); font-size: 20px; line-height: 26px; font-weight: 600; }
+.root :global(.gitms-body) { font-family: var(--gitms-font-sans); font-size: 16px; line-height: 26px; font-weight: 400; }
+.root :global(.gitms-small) { font-family: var(--gitms-font-sans); font-size: 14px; line-height: 20px; font-weight: 400; }
+.root :global(.gitms-button) { font-family: var(--gitms-font-sans); font-size: 14px; line-height: 20px; font-weight: 600; }
+.root :global(.gitms-label) { font-family: var(--gitms-font-mono); font-size: 11px; line-height: 16px; font-weight: 500; letter-spacing: 0.08em; text-transform: lowercase; }
+.root :global(.gitms-code) { font-family: var(--gitms-font-mono); font-size: 13px; line-height: 20px; font-weight: 400; }
+.root :global(.visually-hidden) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

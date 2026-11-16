@@ -1,0 +1,23 @@
+.banner {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--gitms-space-2) var(--gitms-space-3);
+  padding: var(--gitms-space-2) var(--gitms-space-3);
+  border-bottom: 1px solid var(--gitms-warn);
+  background: var(--gitms-warn-soft);
+  color: var(--gitms-ink);
+}
+
+.state {
+  color: var(--gitms-warn);
+  font-weight: 600;
+}
+
+.edit {
+  margin-left: auto;
+  color: var(--gitms-ink);
+}
