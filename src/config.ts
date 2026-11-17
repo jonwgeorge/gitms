@@ -81,14 +81,6 @@ export type UploadsConfig = {
   readonly maxBytes?: number;
 };
 
-/** The built-in Activity section: a GitHub contribution heat map the site can show (see docs/activity.md). */
-export type ActivityConfig = {
-  /** Repo-relative JSON file, e.g. "content/activity.json". */
-  readonly file: string;
-  /** Sidebar label. Defaults to "Activity". */
-  readonly label?: string;
-};
-
 /** A section of your own in the admin sidebar; its component is given to `createAdmin()` under the same slug. */
 export type CustomSection = {
   /** URL segment under the admin path, e.g. "settings". */
@@ -140,7 +132,6 @@ export type GitmsConfig = {
   readonly pages?: PagesConfig;
   readonly redirects?: RedirectsConfig;
   readonly uploads?: UploadsConfig;
-  readonly activity?: ActivityConfig;
   readonly sections?: readonly CustomSection[];
   /** Content files your custom sections read and save, by key. */
   readonly files?: Readonly<Record<string, ExtraFile>>;
@@ -161,7 +152,6 @@ export type ResolvedConfig = {
   readonly pages: Required<PagesConfig> | null;
   readonly redirects: Required<RedirectsConfig> | null;
   readonly uploads: Required<UploadsConfig> | null;
-  readonly activity: Required<ActivityConfig> | null;
   readonly sections: readonly CustomSection[];
   readonly files: Readonly<Record<string, ExtraFile>>;
 };
@@ -170,7 +160,7 @@ const BASE_PATH = /^\/[a-z0-9][a-z0-9_-]{0,63}$/;
 const REPO_FILE = /^(?!\/)(?!.*\.\.)[\w./-]+\.json$/;
 const SEGMENT = /^[a-z0-9][a-z0-9-]{0,31}$/;
 /** Segments the admin uses itself, so a custom section can't take them. */
-const BUILT_IN_SEGMENTS = ["login", "posts", "pages", "redirects", "activity", "preview", "history", "new"];
+const BUILT_IN_SEGMENTS = ["login", "posts", "pages", "redirects", "preview", "history", "new"];
 
 function fail(message: string): never {
   throw new Error(`gitms config: ${message}`);
@@ -254,12 +244,6 @@ export function defineGitms(config: GitmsConfig): ResolvedConfig {
     uploads = { dir, publicPath, maxBytes: config.uploads.maxBytes ?? 5 * 1024 * 1024 };
   }
 
-  let activity: ResolvedConfig["activity"] = null;
-  if (config.activity) {
-    checkFile("activity", config.activity.file);
-    activity = { file: config.activity.file, label: config.activity.label?.trim() || "Activity" };
-  }
-
   const sections = (config.sections ?? []).map((s) => ({ ...s, dashboard: s.dashboard ?? !isSettings(s) }));
   const seen = new Set<string>();
   for (const s of sections) {
@@ -269,7 +253,7 @@ export function defineGitms(config: GitmsConfig): ResolvedConfig {
 
   const files: Record<string, ExtraFile> = {};
   for (const [key, file] of Object.entries(config.files ?? {})) {
-    if (!/^[a-z][a-z0-9-]{0,31}$/.test(key) || ["posts", "pages", "redirects", "activity"].includes(key)) fail(`files: "${key}" can't be used as a file key`);
+    if (!/^[a-z][a-z0-9-]{0,31}$/.test(key) || ["posts", "pages", "redirects"].includes(key)) fail(`files: "${key}" can't be used as a file key`);
     checkFile(`files.${key}`, file.path);
     files[key] = file;
   }
@@ -286,7 +270,6 @@ export function defineGitms(config: GitmsConfig): ResolvedConfig {
     pages,
     redirects,
     uploads,
-    activity,
     sections,
     files,
   };

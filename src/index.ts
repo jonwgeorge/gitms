@@ -6,7 +6,6 @@
  */
 export { defineGitms, routeFor, CORE_POST_FIELDS } from "./config";
 export type {
-  ActivityConfig,
   BuiltInRedirect,
   CustomField,
   CustomSection,

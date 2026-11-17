@@ -15,8 +15,6 @@ describe("the admin router", () => {
     expect(title("posts/hello/history")).toBe("History");
     expect(title("pages/about/history")).toBe("History");
     expect(title("redirects")).toBe("Redirects");
-    expect(title("activity")).toBe("Activity");
-    expect(title("activity/x")).toBeNull();
   });
 
   it("404s unknown paths and extra segments", () => {
@@ -33,7 +31,6 @@ describe("the admin router", () => {
     expect(route(bare, ["posts"])).toBeNull();
     expect(route(bare, ["pages", "new"])).toBeNull();
     expect(route(bare, ["redirects"])).toBeNull();
-    expect(route(bare, ["activity"])).toBeNull();
     expect(route(bare, ["settings"], parts)?.title).toBe("Settings");
     expect(route(bare, ["settings"])).toBeNull();
     expect(route(bare, ["settings", "x"], parts)).toBeNull();

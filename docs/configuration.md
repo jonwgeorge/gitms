@@ -18,7 +18,6 @@ export default defineGitms({
   pages: { ... },
   redirects: { ... },
   uploads: { ... },
-  activity: { ... },
   sections: [ ... ],
   files: { ... },
 });
@@ -130,20 +129,6 @@ Images (PNG, JPEG, GIF, WebP, AVIF, checked by their bytes, not their name)
 are committed under `<dir>/<yyyy>/<mm>/` with a content hash in the name, so
 uploading the same file twice reuses it. Leave `uploads` out to turn uploads
 off.
-
-## `activity`
-
-```ts
-activity: { file: "content/activity.json", label: "Activity" },
-```
-
-| Option | Default | |
-| --- | --- | --- |
-| `file` | (required) | Repo-relative JSON file holding `{ "activity": { "show": true, "github": "octocat" } }`. Create it before you open the section. |
-| `label` | `"Activity"` | Sidebar and heading label. |
-
-Adds an Activity section where the editor turns a GitHub contribution heat map
-on or off and picks whose. Your site draws it; see [activity.md](activity.md).
 
 ## `sections` and `files`
 
