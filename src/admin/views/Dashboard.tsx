@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { activityDraft } from "../../core/activity-draft";
 import { postStatus } from "../../core/redirects";
 import { attempt, type LastCommit } from "../../core/store";
 import { installedCommit, sourceToken, updateStatus } from "../../core/updates";
@@ -16,15 +17,22 @@ const counts = (items: Record<string, unknown>[]) => {
   return `${items.length - drafts} published · ${plural(drafts, "draft")}`;
 };
 
+function activitySummary(file: Awaited<ReturnType<typeof attempt<{ data: unknown }>>>) {
+  if (!file.ok) return "Couldn't load the settings.";
+  const a = activityDraft(file.value.data);
+  return a.show && a.github ? `Heat map shown · ${a.github}` : "Heat map hidden";
+}
+
 /** The admin home: a gitms update notice when there's one, a tile per section, the newest posts and where saves go. */
 export async function Dashboard({ searchParams = {} }: { searchParams?: SearchParams }) {
   const s = await signedIn();
   if ("page" in s) return s.page;
   const c = cms();
-  const [postsFile, pagesFile, redirectsFile, commit, update] = await Promise.all([
+  const [postsFile, pagesFile, redirectsFile, activityFile, commit, update] = await Promise.all([
     c.posts ? readList(s.store, "posts", "posts") : null,
     c.pages ? readList(s.store, "pages", "pages") : null,
     c.redirects ? readList(s.store, "redirects", "redirects") : null,
+    c.activity ? attempt(() => s.store.read("activity")) : null,
     attempt(() => s.store.lastCommit()),
     updateStatus({ installed: installedCommit(), token: sourceToken(s.gate.config.store), userAgent: c.userAgent }),
   ]);
@@ -78,6 +86,17 @@ export async function Dashboard({ searchParams = {} }: { searchParams?: SearchPa
             <p className="gitms-body">{redirectsFile.ok ? plural(redirectsFile.items.length, "redirect") : "Couldn't load redirects."}</p>
             <div className={`gitms-small ${styles.tileLinks}`}>
               <Link href={admin("/redirects")}>Manage redirects</Link>
+            </div>
+          </section>
+        ) : null}
+        {c.activity && activityFile ? (
+          <section className={styles.tile} aria-labelledby="tile-activity">
+            <h2 id="tile-activity" className="gitms-h2">
+              {c.activity.label}
+            </h2>
+            <p className="gitms-body">{activitySummary(activityFile)}</p>
+            <div className={`gitms-small ${styles.tileLinks}`}>
+              <Link href={admin("/activity")}>Edit {c.activity.label}</Link>
             </div>
           </section>
         ) : null}

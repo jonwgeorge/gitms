@@ -170,6 +170,7 @@ describe("content files", () => {
       posts: "content/posts.json",
       pages: "content/pages.json",
       redirects: "content/redirects.json",
+      activity: "content/activity.json",
     });
   });
 

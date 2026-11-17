@@ -13,6 +13,7 @@ import type { AdminComponents } from "./components";
 import { cms } from "../runtime";
 import { HistoryView } from "./HistoryView";
 import type { SearchParams } from "./views/common";
+import { Activity } from "./views/Activity";
 import { Dashboard } from "./views/Dashboard";
 import { Login } from "./views/Login";
 import { EditPage, NewPage, PageList } from "./views/Pages";
@@ -45,6 +46,7 @@ export function route(c: ResolvedConfig, path: readonly string[], components: Ad
     return null;
   }
   if (a === "redirects" && c.redirects && b === undefined) return { title: "Redirects", render: (q) => <Redirects searchParams={q} /> };
+  if (a === "activity" && c.activity && b === undefined) return { title: c.activity.label, render: (q) => <Activity searchParams={q} /> };
   if (a === "preview" && b !== undefined && d !== undefined) {
     const { post, page } = components.preview ?? {};
     if (b === "posts" && c.posts && post) return { title: "Preview post", render: () => <PreviewPost slug={d} render={post} /> };
