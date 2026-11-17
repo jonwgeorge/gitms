@@ -19,4 +19,5 @@ export default defineGitms({
   pages: { file: "content/pages.json", reservedSlugs: ["blog", "contact"] },
   redirects: { file: "content/redirects.json", routes: ["/", "/blog", "/contact"] },
   uploads: { dir: "public/uploads", publicPath: "/uploads" },
+  activity: { file: "content/activity.json" },
 });

@@ -1,0 +1,110 @@
+.root {
+  --cell: var(--gitms-activity-cell, 10px);
+  --gap: var(--gitms-activity-gap, 3px);
+  min-width: 0;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* Scrolls sideways when narrow. rtl starts it scrolled to the newest week, with no script. */
+.scroll {
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  direction: rtl;
+  padding-bottom: 2px;
+}
+
+.graph {
+  direction: ltr;
+  display: inline-flex;
+  gap: var(--gap);
+}
+
+.days,
+.week {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.days {
+  padding-right: 2px;
+}
+
+.month,
+.dayName {
+  height: var(--cell);
+  line-height: var(--cell);
+  white-space: nowrap;
+  color: var(--gitms-activity-label, inherit);
+  opacity: var(--gitms-activity-label-opacity, 0.75);
+}
+
+/* A month name may run over the next columns. */
+.month {
+  width: var(--cell);
+  overflow: visible;
+  margin-bottom: 2px;
+}
+
+.cell,
+.pad {
+  display: block;
+  width: var(--cell);
+  height: var(--cell);
+  border-radius: var(--gitms-activity-radius, 2px);
+}
+
+.cell {
+  background: var(--gitms-activity-0, rgb(127 127 127 / 0.15));
+  outline: 1px solid rgb(127 127 127 / 0.08);
+  outline-offset: -1px;
+}
+
+.cell[data-level="1"] {
+  background: var(--gitms-activity-1, #9be9a8);
+}
+
+.cell[data-level="2"] {
+  background: var(--gitms-activity-2, #40c463);
+}
+
+.cell[data-level="3"] {
+  background: var(--gitms-activity-3, #30a14e);
+}
+
+.cell[data-level="4"] {
+  background: var(--gitms-activity-4, #216e39);
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: 8px;
+}
+
+.legend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap);
+  margin-left: auto;
+  color: var(--gitms-activity-label, inherit);
+}
+
+.legend > :first-of-type {
+  margin-left: 4px;
+}
+
+.legend > :last-of-type {
+  margin-right: 4px;
+}
+
+@media (forced-colors: active) {
+  .cell {
+    forced-color-adjust: none;
+  }
+}

@@ -14,6 +14,7 @@ export function adminNav(): { href: string; label: string }[] {
     ...(c.posts ? [{ href: admin("/posts"), label: c.posts.label }] : []),
     ...(c.pages ? [{ href: admin("/pages"), label: c.pages.label }] : []),
     ...(c.redirects ? [{ href: admin("/redirects"), label: "Redirects" }] : []),
+    ...(c.activity ? [{ href: admin("/activity"), label: c.activity.label }] : []),
     ...c.sections.map((s) => ({ href: admin(`/${s.slug}`), label: s.label })),
   ];
 }
