@@ -28,8 +28,6 @@ with markdown bodies, and every save in the admin is a commit.
 - Draft preview rendered by your own components, for the signed-in editor only
 - Password login (scrypt), signed 12-hour sessions, login throttling
 - Your own admin sections for singleton content (site settings and the like)
-- An optional GitHub contribution heat map for your home page, switched on
-  and off from the admin
 - A notice on the dashboard when a newer gitms is out, with an "Update now"
   button (sites otherwise update themselves daily)
 
@@ -50,7 +48,6 @@ shows a complete site.
 - [Configuration](docs/configuration.md): every option of `defineGitms()`
 - [Reading content](docs/content.md): using the content in your pages
 - [Custom sections](docs/custom-sections.md): editing your own content files
-- [Activity](docs/activity.md): a GitHub contribution heat map on your site
 - [Theming](docs/theming.md): making the admin look like your site
 - [Security](docs/security.md): how the admin is protected, and what it trusts
 

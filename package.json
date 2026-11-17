@@ -32,7 +32,6 @@
     "./admin/ui": "./src/admin/ui.ts",
     "./server": "./src/server.ts",
     "./content": "./src/content.ts",
-    "./activity": "./src/activity.ts",
     "./markdown": "./src/core/markdown.ts",
     "./Markdown": "./src/admin/Markdown.tsx",
     "./proxy": "./src/next/proxy.ts",

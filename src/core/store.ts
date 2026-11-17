@@ -11,10 +11,9 @@ import { join } from "node:path";
 import type { ZodType } from "zod";
 import type { ResolvedConfig } from "../config";
 import { REPO_PATTERN, type StoreConfig } from "./env";
-import { activityFileSchema } from "./activity";
 import { schemasFor } from "./schema";
 
-/** A content file by key: "posts", "pages", "redirects", "activity", or one of `config.files`. */
+/** A content file by key: "posts", "pages", "redirects", or one of `config.files`. */
 export type ContentFile = string;
 
 type Spec = { readonly path: string; readonly schema: ZodType };
@@ -26,7 +25,6 @@ export function contentFiles(cms: ResolvedConfig): Readonly<Record<string, Spec>
   if (cms.posts && s.posts) out.posts = { path: cms.posts.file, schema: s.posts };
   if (cms.pages && s.pages) out.pages = { path: cms.pages.file, schema: s.pages };
   if (cms.redirects) out.redirects = { path: cms.redirects.file, schema: s.redirects };
-  if (cms.activity) out.activity = { path: cms.activity.file, schema: activityFileSchema };
   for (const [key, f] of Object.entries(cms.files)) out[key] = { path: f.path, schema: f.schema };
   return out;
 }
